@@ -87,6 +87,45 @@ connection.connect(err => {
 
 
                     })
+                    break
+
+                    //Select all Item 
+                   case 'Add to Inventory':
+                   inquirer.prompt([
+                     
+                    {
+                         type: "input",
+                         name: "item_id",
+                         message: "What is the item Id?"
+                    },
+                    {
+                         type: "input",
+                         name: "product_name",
+                         message: "What is the product name?"
+                    },
+                    {
+                         type: "input",
+                         name: "department_name",
+                         message: "What is the Product department?"
+                    },
+                    {
+                         type: "input",
+                         name: "price",
+                         message: "How must is this item?"
+                    },
+                    {
+                         type: "input",
+                         name: "stock_quantity",
+                         message: "How many quantity do you want to add?"
+                    }
+                   ]).then(result => {
+
+                    connection.query('INSERT INTO products SET ?', result, function (err, res) {
+                         if (err) throw err;
+                         console.log(`Item inserted`);
+                       });
+                   })
+          // Add a product
           }
 
      })
