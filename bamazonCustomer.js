@@ -7,6 +7,9 @@ const fs = require('fs')
 //Local host port
 const PORT = process.env.PORT || 3000;
 
+//Set state Variable
+let isAppRunning = false;
+
 //Initialize  the Server   
 const server = http.createServer((req, res) => {
 
@@ -18,26 +21,30 @@ const server = http.createServer((req, res) => {
 //Connect to Data Base
 const connection = mysql.createConnection({
      host: process.env.DB_HOST,
+     port: 3306,
      user: process.env.DB_USER,
      password: process.env.DB_PASS,
      database: 'Bamazon'
 });
 
 connection.connect(function (err) {
+     let Products_ID = []
      if (err) throw err;
 
      //Get the database connection ID
      console.log('connected as id ' + connection.threadId);
 
-//Select all the item in the data base
+     //Select all the item in the data base
      connection.query('SELECT * FROM products', (err, data) => {
           if (err) throw err;
-          
-         console.log('These are all the Item that are for sale')
-         //Loop to print out the Product Items
-               for(let i = 0; i < data.length; i++) {
 
-                    console.log(`
+          console.log('These are all the Item that are for sale')
+
+          //Loop to print out the Product Items
+          for (let i = 0; i < data.length; i++) {
+               Products_ID.push(data[i].item_id)
+
+               console.log(`
                     Item Id :${data[i].item_id}
                     Product Name :${data[i].product_name}
                     Department Name :${data[i].department_name}
@@ -46,13 +53,44 @@ connection.connect(function (err) {
                
                     \n......................................\n
                     `)
-               }
-          connection.end()
+          }
+          console.log('These are the order Number of the Available Products')
+          console.log(Products_ID)
+          if (Products_ID.length > 1) {
+
+               // the ID of the product they would like to buy
+               inquirer.prompt([
+
+                    {
+                         type: "input",
+                         name: "order_ID",
+                         message: "What is the ID of the product you would like to buy?"
+                    },
+
+                    {
+                         type: "input",
+                         name: "quantity",
+                         message: "How many units of the product would you like to buy?"
+                    }
+
+
+               ]).then(function (result) {
+
+                    console.log(result)
+
+                    connection.end()
+               })
+          }
+
      })
+
+
+
+
 });
 
 
-//Listen to the server
+// //Listen to the server
 server.listen(PORT, () => {
      console.log(`Listen to port ${PORT}`)
 })

@@ -1,7 +1,7 @@
 {
   "name": "bamazon",
   "version": "1.0.0",
-  "description": "",
+  "description": "Bamazon is like Amazon. This app uses Node and MySql database. To use this app, you need to run npm install to install all the dependencies.",
   "main": "bamazonCustomer.js",
   "scripts": {
     "start": "nodemon"
