@@ -56,6 +56,8 @@ connection.connect( err =>{
           }
           console.log('These are the order Number of the Available Products')
           console.log(Products_ID)
+
+          // This line is to check the sync of Node
           if (Products_ID.length > 1) {
 
                // the ID of the product they would like to buy
@@ -79,9 +81,6 @@ connection.connect( err =>{
                     console.log(result)
                     let order_ID = parseInt(result.order_ID);
                     let qty_order = parseInt(result.quantity);
-                  
-                    
-
 
                     //Validate User input
                     if (Products_ID.includes(order_ID)) {
