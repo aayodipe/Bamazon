@@ -18,35 +18,35 @@ const connection = mysql.createConnection({
 
 connection.connect(err => {
      let Products_ID = []
-               if (err) throw err;
+     if (err) throw err;
 
-               //Get the database connection ID
-               console.log('connected as id ' + connection.threadId)
+     //Get the database connection ID
+     console.log('connected as id ' + connection.threadId)
 
-               inquirer.prompt([
+     inquirer.prompt([
 
-                    {
-                         type: "list",
-                         name: "option",
-                         message: "What would you like to Check?",
-                         choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product']
+          {
+               type: "list",
+               name: "option",
+               message: "What would you like to Check?",
+               choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product']
 
-                    }
-               ]).then(result => {
+          }
+     ]).then(result => {
 
-                    switch (result.option) {
+          switch (result.option) {
 
-                         case 'View Products for Sale':
-                              connection.query('SELECT * FROM products', (err, data) => {
-                                        if (err) throw err;
+               case 'View Products for Sale':
+                    connection.query('SELECT * FROM products', (err, data) => {
+                         if (err) throw err;
 
-                                        console.log('These are all the Item that are for sale')
+                         console.log('These are all the Item that are for sale')
 
-                                        //Loop to print out the Product Items
-                                        for (let i = 0; i < data.length; i++) {
-                                             Products_ID.push(data[i].item_id)
+                         //Loop to print out the Product Items
+                         for (let i = 0; i < data.length; i++) {
+                              Products_ID.push(data[i].item_id)
 
-                                             console.log(`
+                              console.log(`
                               Item Id :${data[i].item_id}
                               Product Name :${data[i].product_name}
                               Department Name :${data[i].department_name}
@@ -55,11 +55,39 @@ connection.connect(err => {
                          
                               \n......................................\n
                               `)
-                                        }
-
-                                        console.log('These are IDs of the Available Products')
-                                        console.log(Products_ID)
-                                   })
                          }
+
+                         console.log('These are IDs of the Available Products')
+                         console.log(Products_ID)
                     })
-               })
+                   break
+                    //To get inventories less than FIVE(5)
+
+               case 'View Low Inventory':
+
+                    connection.query('SELECT * FROM products WHERE stock_quantity < 5', (err, data) => {
+                         if (err) throw err;
+
+                         console.log('These are all the items that their Stock is less than 5')
+                         //Loop to print out the Product Items
+                         for (let i = 0; i < data.length; i++) {
+                          
+
+                              console.log(`
+                                Item Id :${data[i].item_id}
+                                Product Name :${data[i].product_name}
+                                Department Name :${data[i].department_name}
+                                Price :${data[i].price}
+                                Stock Quantity:${data[i].stock_quantity}
+                           
+                                \n......................................\n
+                                `)
+                         }
+
+
+
+                    })
+          }
+
+     })
+})
