@@ -94,8 +94,9 @@ connection.connect(err => {
                    inquirer.prompt([
                      
                     {
-                         type: "input",
+                         type: "list",
                          name: "item_id",
+                         choices: ['104', '105', '106', '107', '108', '109', '1201', '1202', '6403', '6404', '6405','last'],
                          message: "What is the item Id?"
                     },
                     {
@@ -104,8 +105,9 @@ connection.connect(err => {
                          message: "What is the product name?"
                     },
                     {
-                         type: "input",
+                         type: "list",
                          name: "department_name",
+                         choices:['Wear','Computer','Electronic', 'Grocery','Jewelry'],
                          message: "What is the Product department?"
                     },
                     {
@@ -118,14 +120,65 @@ connection.connect(err => {
                          name: "stock_quantity",
                          message: "How many quantity do you want to add?"
                     }
-                   ]).then(result => {
-
-                    connection.query('INSERT INTO products SET ?', result, function (err, res) {
-                         if (err) throw err;
-                         console.log(`Item inserted`);
-                       });
+                   ]).then(resp => {
+                        console.log(resp.item_id)
+                        console.log(resp.price)
+                        console.log(resp.stock_quantity)
+                   
+                        connection.query(
+                         'UPDATE products SET stock_quantity = ?, price = ? Where item_id = ?',
+                         [resp.stock_quantity, resp.price, resp.item_id],
+                         (err, result) => {
+                           if (err) throw err;
+                       
+                           console.log(`Changed ${result.changedRows} row(s)`);
+                         }
+                       );
+                       
+                       
+                        
+                   
                    })
+                   break
           // Add a product
+
+          case 'Add New Product':
+          inquirer.prompt([
+                     
+               {
+                    type: "input",
+                    name: "item_id",
+                    message: "What is the item Id?"
+               },
+               {
+                    type: "input",
+                    name: "product_name",
+                    message: "What is the product name?"
+               },
+               {
+                    type: "input",
+                    name: "department_name",
+                    message: "What is the Product department?"
+               },
+               {
+                    type: "input",
+                    name: "price",
+                    message: "How must is this item?"
+               },
+               {
+                    type: "input",
+                    name: "stock_quantity",
+                    message: "How many quantity do you want to add?"
+               }
+              ]).then(result => {
+
+               connection.query('INSERT INTO products SET ?', result, function (err, res) {
+                    if (err) throw err;
+                    console.log(`Item inserted`);
+                  });
+              })
+              break
+
           }
 
      })
