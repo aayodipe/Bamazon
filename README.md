@@ -84,7 +84,7 @@ Running the above code returns a set of menu options to pick from:
 
   * If a manager selects `View Low Inventory`, this app will list all items with an inventory count lower than five.
 
-  [View Low Inventories](https://i.imgur.com/55n0Dii.png)
+  ![View Low Inventories](https://i.imgur.com/55n0Dii.png)
 
   * If a manager selects `Add to Inventory`, this app will display a prompt that will let the manager "add more" of any item currently in the store. 
 
