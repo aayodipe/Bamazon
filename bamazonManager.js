@@ -121,9 +121,7 @@ connection.connect(err => {
                          message: "How many quantity do you want to add?"
                     }
                    ]).then(resp => {
-                        console.log(resp.item_id)
-                        console.log(resp.price)
-                        console.log(resp.stock_quantity)
+                     
                    
                         connection.query(
                          'UPDATE products SET stock_quantity = ?, price = ? Where item_id = ?',
