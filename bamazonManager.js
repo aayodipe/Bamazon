@@ -172,6 +172,7 @@ connection.connect(err => {
                }
               ]).then(result => {
 
+               
                connection.query('INSERT INTO products SET ?', result, function (err, res) {
                     if (err) throw err;
                     console.log(`Item inserted`);

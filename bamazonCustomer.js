@@ -27,7 +27,7 @@ const connection = mysql.createConnection({
      database: 'Bamazon'
 });
 
-connection.connect( err =>{
+connection.connect(err => {
      let Products_ID = []
      if (err) throw err;
 
@@ -76,7 +76,7 @@ connection.connect( err =>{
                     }
 
 
-               ]).then(result=> {
+               ]).then(result => {
 
                     console.log(result)
                     let order_ID = parseInt(result.order_ID);
@@ -85,23 +85,26 @@ connection.connect( err =>{
                     //Validate User input
                     if (Products_ID.includes(order_ID)) {
 
-                  //Get the order product and quantity from the database  using product ID supplied by the customer
-                         connection.query('SELECT * FROM products WHERE item_id = '+ order_ID, (err, data) => {
-                         
+                         //Get the order product and quantity from the database  using product ID supplied by the customer
+                         connection.query('SELECT * FROM products WHERE item_id = ' + order_ID, (err, data) => {
+
                               if (err) throw err;
-                              if(qty_order > parseInt(data[0].stock_quantity)){
+                              if (qty_order > parseInt(data[0].stock_quantity)) {
+
+                                   console.log('Sorry! Insufficient quantity!')
+                              } else {
+
+                                   let total = parseInt(data[0].price * qty_order).toFixed(2)
+                                   console.log(`Your total order is $${total}. Please proceed to Checkout`)
+
+                                   //Record Product sales in Database
+                                  
                                    
-                                   console.log('Sorry! Insufficient quantity!' )
-                              }
-                              else{
-                                
-                               let total = parseInt(data[0].price * qty_order).toFixed(2)
-                               console.log(`Your total order is $${total}. Please proceed to Checkout`)
                               }
                          })
                          //Validate if order is available
                     } else {
-                         
+
                          console.log('Sorry! This Item is not Available')
                     }
 
